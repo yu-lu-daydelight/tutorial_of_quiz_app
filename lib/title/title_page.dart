@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../quiz/quiz_page.dart';
 
 class TitlePage extends StatelessWidget {
   const TitlePage({super.key});
@@ -37,7 +38,12 @@ class TitlePage extends StatelessWidget {
                     SizedBox(
                       height: 60,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => QuizPage()),
+                          );
+                        },
                         child: const Text('スタート'),
                       ),
                     ),

@@ -9,9 +9,8 @@ class TitlePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
-            //mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
@@ -39,11 +38,9 @@ class TitlePage extends StatelessWidget {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => QuizPage(currentIndex: 0),
-                            ),
+                            MaterialPageRoute(builder: (context) => QuizPage()),
                           );
                         },
                         child: const Text('スタート'),

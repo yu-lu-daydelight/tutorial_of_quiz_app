@@ -1,27 +1,30 @@
+import 'dart:ffi';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tutorial_of_quzie_app/quiz/quiz.dart';
 import 'package:tutorial_of_quzie_app/quiz/quiz_data.dart';
+import '../result/result_page.dart';
 
 var quizzes = Quizzes;
+var correctCount = 0;
+var currentIndex = 0;
 
 class QuizPage extends StatefulWidget {
-  final int currentIndex;
-  const QuizPage({super.key, required this.currentIndex});
+  //final int currentIndex;
+  //const QuizPage({super.key, required this.currentIndex});
   @override
-  State<QuizPage> createState() => _QuizPageState(required this.currentIndex);
+  State<QuizPage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
-  final int index;
-  _QuizPageState({required this.index}):super(currentIndex: index)
+  //final int index;
+  //_QuizPageState({required this.index}):super(currentIndex: index)
 
-  int get index => currentIndex;
+  //int get index => widget.currentIndex;
 
-  Quiz get quiz => quizzes[index];
+  Quiz get quiz => quizzes[currentIndex];
   bool showResult = false;
   String? selectChoice;
 
@@ -40,9 +43,6 @@ class _QuizPageState extends State<QuizPage> {
   Widget _nextButton() {
     return ElevatedButton(
       onPressed: () {
-        setState(() {
-          currentIndex += 1;
-        });
         _nextQuestion();
       },
       child: Text('次へ'),
@@ -50,17 +50,24 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _nextQuestion() {
-    if (index < quizzes.length - 1) {
+    if (currentIndex < quizzes.length - 1) {
+      if (selectChoice == quiz.correctChoice) {
+        correctCount += 1;
+      }
+      setState(() {
+        currentIndex += 1;
+        selectChoice = null;
+        showResult = false;
+      });
+    } else if (currentIndex == quizzes.length - 1) {
+      if (selectChoice == quiz.correctChoice) {
+        correctCount += 1;
+      }
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => QuizPage(currentIndex: index + 1),
+          builder: (context) => ResultPage(correctCount: correctCount),
         ),
-      );
-    } else if (index == quizzes.length - 1) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => resultPage()),
       );
     }
   }
@@ -124,17 +131,16 @@ class _QuizPageState extends State<QuizPage> {
               ),
 
               Center(
-                child: Center(
-                  child: Column(
-                    children: [
-                      if (showResult == true &&
-                          selectChoice == quiz.correctChoice)
-                        const Icon(Icons.circle_outlined)
-                      else if (showResult == true &&
-                          selectChoice != quiz.correctChoice)
-                        const Icon(Icons.close),
-                    ],
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (showResult == true &&
+                        selectChoice == quiz.correctChoice)
+                      const Icon(Icons.circle_outlined)
+                    else if (showResult == true &&
+                        selectChoice != quiz.correctChoice)
+                      const Icon(Icons.close),
+                  ],
                 ),
               ),
             ],

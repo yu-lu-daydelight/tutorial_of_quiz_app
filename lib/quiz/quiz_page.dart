@@ -3,18 +3,28 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tutorial_of_quzie_app/quiz/quiz.dart';
+import 'package:tutorial_of_quzie_app/quiz/quiz_data.dart';
+
+var quizzes = Quizzes;
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  final int currentIndex;
+  const QuizPage({super.key, required this.currentIndex});
   @override
-  State<QuizPage> createState() => _QuizPageState();
+  State<QuizPage> createState() => _QuizPageState(required this.currentIndex);
 }
 
 class _QuizPageState extends State<QuizPage> {
-  final choices = ["a", "b", "c", "d"];
-  final correctChoice = "a";
+  final int index;
+  _QuizPageState({required this.index}):super(currentIndex: index)
+
+  int get index => currentIndex;
+
+  Quiz get quiz => quizzes[index];
   bool showResult = false;
   String? selectChoice;
+
   Widget _choiceButton({required String choice}) {
     return ElevatedButton(
       onPressed: () {
@@ -25,6 +35,34 @@ class _QuizPageState extends State<QuizPage> {
       },
       child: Text(choice),
     );
+  }
+
+  Widget _nextButton() {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          currentIndex += 1;
+        });
+        _nextQuestion();
+      },
+      child: Text('次へ'),
+    );
+  }
+
+  void _nextQuestion() {
+    if (index < quizzes.length - 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => QuizPage(currentIndex: index + 1),
+        ),
+      );
+    } else if (index == quizzes.length - 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => resultPage()),
+      );
+    }
   }
 
   @override
@@ -53,9 +91,9 @@ class _QuizPageState extends State<QuizPage> {
                           ), // rounded corners
                         ),
                         child: Center(
-                          child: const Text(
-                            'What is the capital of France?',
-                            style: TextStyle(
+                          child: Text(
+                            quiz.question,
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
@@ -68,10 +106,18 @@ class _QuizPageState extends State<QuizPage> {
                       child: (Column(
                         children:
                             //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            choices
+                            quiz.choices
                                 .map((c) => _choiceButton(choice: c))
                                 .toList(),
                       )),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Center(
+                        child: selectChoice != null
+                            ? _nextButton()
+                            : const SizedBox.shrink(),
+                      ),
                     ),
                   ],
                 ),
@@ -81,10 +127,11 @@ class _QuizPageState extends State<QuizPage> {
                 child: Center(
                   child: Column(
                     children: [
-                      if (showResult == true && selectChoice == correctChoice)
+                      if (showResult == true &&
+                          selectChoice == quiz.correctChoice)
                         const Icon(Icons.circle_outlined)
                       else if (showResult == true &&
-                          selectChoice != correctChoice)
+                          selectChoice != quiz.correctChoice)
                         const Icon(Icons.close),
                     ],
                   ),
@@ -93,7 +140,7 @@ class _QuizPageState extends State<QuizPage> {
             ],
           ),
         ),
-      ), //choices.map((choice) => _choiceButton(choice: choice)).toList()
+      ),
     );
   }
 }

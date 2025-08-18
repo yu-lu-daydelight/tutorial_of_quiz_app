@@ -41,7 +41,9 @@ class TitlePage extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => QuizPage()),
+                            MaterialPageRoute(
+                              builder: (context) => QuizPage(currentIndex: 0),
+                            ),
                           );
                         },
                         child: const Text('スタート'),

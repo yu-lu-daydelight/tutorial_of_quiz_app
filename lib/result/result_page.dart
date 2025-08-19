@@ -25,7 +25,15 @@ class ResultPage extends StatelessWidget {
               SizedBox(
                 width: 300,
                 height: 50,
-                child: ElevatedButton(onPressed: () {}, child: Text("リトライ")),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => QuizPage()),
+                    );
+                  },
+                  child: Text("リトライ"),
+                ),
               ),
               const SizedBox(height: 40),
               SizedBox(

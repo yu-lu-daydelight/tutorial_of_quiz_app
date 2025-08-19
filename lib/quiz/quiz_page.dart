@@ -17,9 +17,8 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   //final int index;
   //_QuizPageState({required this.index}):super(currentIndex: index)
-
   //int get index => widget.currentIndex;
-  var quizzes = Quizzes;
+  late final List<Quiz> quizzes;
   var correctCount = 0;
   var currentIndex = 0;
   Quiz get quiz => quizzes[currentIndex];
@@ -29,7 +28,7 @@ class _QuizPageState extends State<QuizPage> {
   Widget _choiceButton({required String choice}) {
     return ElevatedButton(
       onPressed: showResult
-          ? null
+          ? () {}
           : () {
               selectChoice = choice;
               setState(() {
@@ -42,7 +41,7 @@ class _QuizPageState extends State<QuizPage> {
             },
       style: ElevatedButton.styleFrom(
         backgroundColor: (selectChoice == choice)
-            ? Colors.red.shade400
+            ? Colors.red.shade300
             : Colors.grey.shade300,
       ),
       child: Text(choice),
@@ -78,6 +77,18 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
+  List<T> setupQuizzes<T>(List<T> quizzes) {
+    quizzes.shuffle();
+    return quizzes;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    quizzes = setupQuizzes(Quizzes);
+    quiz.choices.shuffle();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,13 +106,11 @@ class _QuizPageState extends State<QuizPage> {
                       child: Container(
                         width: 300,
                         height: 100,
-                        padding: const EdgeInsets.all(5.0), // inside spacing
+                        padding: const EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
-                          color: Colors.white, // background color
+                          color: Colors.white,
                           border: Border.all(color: Colors.white, width: 2),
-                          borderRadius: BorderRadius.circular(
-                            5,
-                          ), // rounded corners
+                          borderRadius: BorderRadius.circular(5),
                         ),
                         child: Center(
                           child: Text(

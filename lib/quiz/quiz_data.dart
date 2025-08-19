@@ -26,30 +26,30 @@ final fivQues = Quiz(
   correctChoice: "-1",
 );
 final sixQes = Quiz(
-  question: "日本の首都は？",
-  choices: ["東京", "大阪", "札幌", "京都"],
-  correctChoice: "東京",
+  question: "この下のどの開店寿司で抽選会がありますか？",
+  choices: ["くら寿司", "はま寿司", "スシロー", "かっぱ寿司"],
+  correctChoice: "くら寿司",
 );
 final sevQues = Quiz(
-  question: "日本の首都は？",
-  choices: ["東京", "大阪", "札幌", "京都"],
-  correctChoice: "東京",
+  question: "寿司は何をつけて食べますか？",
+  choices: ["砂糖", "ジュース", " 空気", "醤油"],
+  correctChoice: "醤油",
 );
 
 final eigQues = Quiz(
-  question: "日本の首都は？",
-  choices: ["東京", "大阪", "札幌", "京都"],
-  correctChoice: "東京",
+  question: "クレヨン新ちゃんがどこに住んでいますか？",
+  choices: ["東京都", "埼玉県", "秋田県", "広島県"],
+  correctChoice: "埼玉県",
 );
 final ninQues = Quiz(
-  question: "日本の首都は？",
-  choices: ["東京", "大阪", "札幌", "京都"],
-  correctChoice: "東京",
+  question: "柴犬が可愛ですか？",
+  choices: ["いいえ", "柴犬って何", "とてもかわい", "かわい"],
+  correctChoice: "とてもかわい",
 );
 final tenQues = Quiz(
-  question: "日本の首都は？",
+  question: "江戸時代で日本の首都は？",
   choices: ["東京", "大阪", "札幌", "京都"],
-  correctChoice: "東京",
+  correctChoice: "京都",
 );
 
 final Quizzes = [

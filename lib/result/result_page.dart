@@ -19,10 +19,7 @@ class ResultPage extends StatelessWidget {
               SizedBox(
                 width: 300,
                 height: 50,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(textToShow),
-                ),
+                child: Center(child: Text("正解数：$textToShow問")),
               ),
               const SizedBox(height: 40),
               SizedBox(

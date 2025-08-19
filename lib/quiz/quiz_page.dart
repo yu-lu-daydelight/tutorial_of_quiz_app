@@ -7,10 +7,6 @@ import 'package:tutorial_of_quzie_app/quiz/quiz.dart';
 import 'package:tutorial_of_quzie_app/quiz/quiz_data.dart';
 import '../result/result_page.dart';
 
-var quizzes = Quizzes;
-var correctCount = 0;
-var currentIndex = 0;
-
 class QuizPage extends StatefulWidget {
   //final int currentIndex;
   //const QuizPage({super.key, required this.currentIndex});
@@ -23,19 +19,32 @@ class _QuizPageState extends State<QuizPage> {
   //_QuizPageState({required this.index}):super(currentIndex: index)
 
   //int get index => widget.currentIndex;
-
+  var quizzes = Quizzes;
+  var correctCount = 0;
+  var currentIndex = 0;
   Quiz get quiz => quizzes[currentIndex];
   bool showResult = false;
   String? selectChoice;
 
   Widget _choiceButton({required String choice}) {
     return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          selectChoice = choice;
-          showResult = true;
-        });
-      },
+      onPressed: showResult
+          ? null
+          : () {
+              selectChoice = choice;
+              setState(() {
+                if (selectChoice == quiz.correctChoice) {
+                  correctCount += 1;
+                }
+                showResult = true;
+                //selectChoice = null;
+              });
+            },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: (selectChoice == choice)
+            ? Colors.red.shade400
+            : Colors.grey.shade300,
+      ),
       child: Text(choice),
     );
   }
@@ -51,18 +60,15 @@ class _QuizPageState extends State<QuizPage> {
 
   void _nextQuestion() {
     if (currentIndex < quizzes.length - 1) {
-      if (selectChoice == quiz.correctChoice) {
-        correctCount += 1;
-      }
       setState(() {
         currentIndex += 1;
         selectChoice = null;
         showResult = false;
       });
     } else if (currentIndex == quizzes.length - 1) {
-      if (selectChoice == quiz.correctChoice) {
-        correctCount += 1;
-      }
+      //if (selectChoice == quiz.correctChoice) {
+      //correctCount += 1;
+      //}
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

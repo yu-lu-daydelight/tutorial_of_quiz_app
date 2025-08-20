@@ -27,36 +27,36 @@ class _QuizPageState extends State<QuizPage> {
   late String R;
   late DateTime currTime;
   Quiz get quiz => quizzes[currentIndex];
+  //List<String> get randomChoices => quiz.choices;
   bool showResult = false;
   String? selectChoice;
 
   Widget _choiceButton({required String choice}) {
     return ElevatedButton(
-      onPressed: showResult
-          ? () {
-              return;
-            }
-          : () {
-              selectChoice = choice;
-              currTime = DateTime.now();
-              setState(() {
-                if (selectChoice == quiz.correctChoice) {
-                  correctCount += 1;
-                  R = "正解";
-                } else {
-                  R = "不正解";
-                }
-                showResult = true;
-              });
-              var hisRecord = History(
-                question: quiz.question,
-                result: R,
-                answer: choice,
-                correctAnswer: quiz.correctChoice,
-                replyDate: currTime.toString(),
-              );
-              trackData.addHistory(hisRecord);
-            },
+      onPressed: () {
+        if (showResult) {
+          return;
+        }
+        selectChoice = choice;
+        currTime = DateTime.now();
+        setState(() {
+          if (selectChoice == quiz.correctChoice) {
+            correctCount += 1;
+            R = "正解";
+          } else {
+            R = "不正解";
+          }
+          showResult = true;
+        });
+        var hisRecord = History(
+          question: quiz.question,
+          result: R,
+          answer: choice,
+          correctAnswer: quiz.correctChoice,
+          replyDate: currTime.toString(),
+        );
+        trackData.addHistory(hisRecord);
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: (selectChoice == choice)
             ? Colors.red.shade300
@@ -92,9 +92,11 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
-  List<T> setupQuizzes<T>(List<T> quizzes) {
+  List<Quiz> setupQuizzes(List<Quiz> quizzes) {
     quizzes.shuffle();
-    return quizzes;
+    return quizzes.map((quiz) {
+      return quiz..choices.shuffle();
+    }).toList();
   }
 
   @override
@@ -165,10 +167,16 @@ class _QuizPageState extends State<QuizPage> {
                   children: [
                     if (showResult == true &&
                         selectChoice == quiz.correctChoice)
-                      const Icon(Icons.circle_outlined)
+                      const ImageIcon(
+                        AssetImage('assets/images/jjdEzQvg.png'),
+                        size: 30,
+                      )
                     else if (showResult == true &&
                         selectChoice != quiz.correctChoice)
-                      const Icon(Icons.close),
+                      const ImageIcon(
+                        AssetImage('assets/images/3imvJk3g.png'),
+                        size: 30,
+                      ),
                   ],
                 ),
               ),

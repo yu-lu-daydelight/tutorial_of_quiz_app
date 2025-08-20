@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../quiz/quiz_page.dart';
+import '../title/title_page.dart';
 
 class ResultPage extends StatelessWidget {
   final int correctCount;
@@ -39,7 +40,15 @@ class ResultPage extends StatelessWidget {
               SizedBox(
                 width: 300,
                 height: 50,
-                child: ElevatedButton(onPressed: () {}, child: Text("タイトル")),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TitlePage()),
+                    );
+                  },
+                  child: Text("タイトル"),
+                ),
               ),
             ],
           ),

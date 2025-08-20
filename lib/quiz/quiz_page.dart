@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tutorial_of_quzie_app/quiz/quiz.dart';
 import 'package:tutorial_of_quzie_app/quiz/quiz_data.dart';
+import '../history/history.dart';
 import '../result/result_page.dart';
+
+HistoryData trackData = HistoryData();
 
 class QuizPage extends StatefulWidget {
   //final int currentIndex;
@@ -21,6 +24,8 @@ class _QuizPageState extends State<QuizPage> {
   late final List<Quiz> quizzes;
   var correctCount = 0;
   var currentIndex = 0;
+  late String R;
+  late DateTime currTime;
   Quiz get quiz => quizzes[currentIndex];
   bool showResult = false;
   String? selectChoice;
@@ -28,16 +33,29 @@ class _QuizPageState extends State<QuizPage> {
   Widget _choiceButton({required String choice}) {
     return ElevatedButton(
       onPressed: showResult
-          ? () {}
+          ? () {
+              return;
+            }
           : () {
               selectChoice = choice;
+              currTime = DateTime.now();
               setState(() {
                 if (selectChoice == quiz.correctChoice) {
                   correctCount += 1;
+                  R = "正解";
+                } else {
+                  R = "不正解";
                 }
                 showResult = true;
-                //selectChoice = null;
               });
+              var hisRecord = History(
+                question: quiz.question,
+                result: R,
+                answer: choice,
+                correctAnswer: quiz.correctChoice,
+                replyDate: currTime.toString(),
+              );
+              trackData.addHistory(hisRecord);
             },
       style: ElevatedButton.styleFrom(
         backgroundColor: (selectChoice == choice)
@@ -65,9 +83,6 @@ class _QuizPageState extends State<QuizPage> {
         showResult = false;
       });
     } else if (currentIndex == quizzes.length - 1) {
-      //if (selectChoice == quiz.correctChoice) {
-      //correctCount += 1;
-      //}
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -86,7 +101,6 @@ class _QuizPageState extends State<QuizPage> {
   void initState() {
     super.initState();
     quizzes = setupQuizzes(Quizzes);
-    quiz.choices.shuffle();
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tutorial_of_quzie_app/quiz/quiz.dart';
 import 'package:tutorial_of_quzie_app/quiz/quiz_data.dart';
+import '../gen/assets.gen.dart';
 import '../history/history.dart';
 import '../result/result_page.dart';
 
@@ -167,16 +168,10 @@ class _QuizPageState extends State<QuizPage> {
                   children: [
                     if (showResult == true &&
                         selectChoice == quiz.correctChoice)
-                      const ImageIcon(
-                        AssetImage('assets/images/jjdEzQvg.png'),
-                        size: 30,
-                      )
+                      Assets.images.jjdEzQvg.image(width: 80, height: 80)
                     else if (showResult == true &&
                         selectChoice != quiz.correctChoice)
-                      const ImageIcon(
-                        AssetImage('assets/images/3imvJk3g.png'),
-                        size: 30,
-                      ),
+                      Assets.images.a3imvJk3g.image(width: 80, height: 80),
                   ],
                 ),
               ),
